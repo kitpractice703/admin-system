@@ -22,7 +22,17 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_logs:/opt/sonarqube/logs
 
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: admin-jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+
 volumes:
   pgdata:
   sonarqube_data:
   sonarqube_logs:
+  jenkins_data:
