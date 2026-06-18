@@ -12,7 +12,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   sonarqube:
-    image: sonarqube:lts
+    image: sonarqube:community
     container_name: admin-sonarqube
     ports:
       - "9000:9000"
