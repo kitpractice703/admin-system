@@ -11,12 +11,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
 jwt:
-  secret: this-is-a-temporary-secret-key-change-it-later-1234567890
+  secret: ${JWT_SECRET}
   expiration: 3600000
