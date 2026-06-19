@@ -1,2 +1,3 @@
 rootProject.name = 'admin-backend'
 include 'auth-service'
+include 'user-service'
