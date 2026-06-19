@@ -34,7 +34,7 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         dir('admin-backend') {
-          sh "./gradlew sonar -Dsonar.projectKey=auth-service -Dsonar.host.url=http://sonarqube:9000 -Dsonar.token=${SONAR_TOKEN}"
+          sh './gradlew sonar -Dsonar.projectKey=auth-service -Dsonar.host.url=http://sonarqube:9000 -Dsonar.token=$SONAR_TOKEN'
         }
       }
     }
