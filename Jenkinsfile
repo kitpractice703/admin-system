@@ -25,7 +25,7 @@ pipeline {
     stage('Test & Coverage') {
       steps {
         dir('admin-backend') {
-          sh './gradlew :auth-service:test :auth-service:jacocoTestReport -Dspring.datasource.url=jdbc:postgresql://admin-postgres:5432/auth_db'
+          sh './gradlew :auth-service:test :auth-service:jacocoTestReport -Dspring.datasource.url=jdbc:postgresql://postgres:5432/auth_db'
         }
       }
     }
@@ -33,7 +33,7 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         dir('admin-backend') {
-          sh "./gradlew sonar -Dsonar.projectKey=auth-service -Dsonar.host.url=http://admin-sonarqube:9000 -Dsonar.token=${SONAR_TOKEN}"
+          sh "./gradlew sonar -Dsonar.projectKey=auth-service -Dsonar.host.url=http://sonarqube:9000 -Dsonar.token=${SONAR_TOKEN}"
         }
       }
     }
