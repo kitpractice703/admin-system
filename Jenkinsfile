@@ -4,6 +4,7 @@ pipeline {
   environment {
     JWT_SECRET = credentials('jwt-secret')
     SONAR_TOKEN = credentials('sonarqube-token')
+    SPRING_DATASOURCE_URL = 'jdbc:postgresql://postgres:5432/auth_db'
   }
 
   stages {
@@ -25,7 +26,7 @@ pipeline {
     stage('Test & Coverage') {
       steps {
         dir('admin-backend') {
-          sh './gradlew :auth-service:test :auth-service:jacocoTestReport -Dspring.datasource.url=jdbc:postgresql://postgres:5432/auth_db'
+          sh './gradlew :auth-service:test :auth-service:jacocoTestReport'
         }
       }
     }
