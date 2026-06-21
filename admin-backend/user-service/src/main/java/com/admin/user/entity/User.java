@@ -32,4 +32,16 @@ public class User {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public User(String username, String email, String phoneNumber) {
+        this.username = username;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void update(String username, String email, String phoneNumber) {
+        this.username = username;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 }
