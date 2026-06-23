@@ -50,6 +50,24 @@ pipeline {
       }
     }
 
+    stage('content-service Build') {
+      steps {
+        dir('admin-backend') {
+          sh './gradlew :content-service:build -x test'
+        }
+      }
+    }
+
+    stage('content-service Test & Coverage') {
+      steps {
+        withEnv(['SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/content_db']) {
+          dir('admin-backend') {
+            sh './gradlew :content-service:test :content-service:jacocoTestReport'
+          }
+        }
+      }
+    }
+
     stage('SonarQube Analysis') {
       steps {
         dir('admin-backend') {
