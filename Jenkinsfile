@@ -87,7 +87,7 @@ pipeline {
         sh 'docker build -t auth-service:latest -f admin-backend/auth-service/Dockerfile admin-backend'
         sh 'docker build -t user-service:latest -f admin-backend/user-service/Dockerfile admin-backend'
         sh 'docker build -t content-service:latest -f admin-backend/content-service/Dockerfile admin-backend'
-        sh 'docker build -t admin-frontend:latest admin-frontend'
+        sh 'docker build -t frontend:latest admin-frontend'
       }
     }
 
