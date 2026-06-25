@@ -13,6 +13,12 @@ pipeline {
       }
     }
 
+    stage('GitLeaks') {
+      steps {
+        sh 'docker run --rm -v $WORKSPACE:/path gitleaks/gitleaks:latest detect --source /path --no-git'
+      }
+    }
+
     stage('auth-service Build') {
       steps {
         dir('admin-backend') {
@@ -73,6 +79,15 @@ pipeline {
         dir('admin-backend') {
           sh './gradlew sonar -Dsonar.projectKey=admin-backend -Dsonar.host.url=http://sonarqube:9000 -Dsonar.token=$SONAR_TOKEN'
         }
+      }
+    }
+
+    stage('Docker Build') {
+      steps {
+        sh 'docker build -t auth-service:latest -f admin-backend/auth-service/Dockerfile admin-backend'
+        sh 'docker build -t user-service:latest -f admin-backend/user-service/Dockerfile admin-backend'
+        sh 'docker build -t content-service:latest -f admin-backend/content-service/Dockerfile admin-backend'
+        sh 'docker build -t admin-frontend:latest admin-frontend'
       }
     }
   }
