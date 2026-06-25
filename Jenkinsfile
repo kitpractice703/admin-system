@@ -15,7 +15,7 @@ pipeline {
 
     stage('GitLeaks') {
       steps {
-        sh 'docker run --rm -v $WORKSPACE:/path gitleaks/gitleaks:latest detect --source /path --no-git'
+        sh 'gitleaks detect --source $WORKSPACE --no-git'
       }
     }
 
@@ -88,6 +88,17 @@ pipeline {
         sh 'docker build -t user-service:latest -f admin-backend/user-service/Dockerfile admin-backend'
         sh 'docker build -t content-service:latest -f admin-backend/content-service/Dockerfile admin-backend'
         sh 'docker build -t admin-frontend:latest admin-frontend'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+          sh 'kubectl apply -f k8s/auth-service.yaml'
+          sh 'kubectl apply -f k8s/user-service.yaml'
+          sh 'kubectl apply -f k8s/content-service.yaml'
+          sh 'kubectl apply -f k8s/frontend.yaml'
+        }
       }
     }
   }
