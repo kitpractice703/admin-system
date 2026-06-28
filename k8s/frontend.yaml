@@ -12,10 +12,11 @@ spec:
       labels:
         app: frontend
     spec:
+      imagePullSecrets:
+        - name: ocir-secret
       containers:
         - name: frontend
-          image: frontend:latest
-          imagePullPolicy: Never
+          image: yny.ocir.io/axspvtyyqq6h/frontend:latest
           ports:
             - containerPort: 80
 ---

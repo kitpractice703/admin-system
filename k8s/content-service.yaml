@@ -12,15 +12,16 @@ spec:
       labels:
         app: content-service
     spec:
+      imagePullSecrets:
+        - name: ocir-secret
       containers:
         - name: content-service
-          image: content-service:latest
-          imagePullPolicy: Never
+          image: yny.ocir.io/axspvtyyqq6h/content-service:latest
           ports:
             - containerPort: 8083
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://host.docker.internal:5432/content_db
+              value: jdbc:postgresql://postgres:5432/content_db
             - name: SPRING_DATASOURCE_USERNAME
               value: admin
             - name: SPRING_DATASOURCE_PASSWORD
