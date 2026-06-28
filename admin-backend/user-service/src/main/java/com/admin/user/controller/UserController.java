@@ -16,32 +16,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
+  @GetMapping
+  public ResponseEntity<List<UserResponse>> getAllUsers() {
+    return ResponseEntity.ok(userService.getAllUsers());
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+    return ResponseEntity.ok(userService.getUserById(id));
+  }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
-    }
+  @PostMapping
+  public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
-                                                   @RequestBody @Valid UserRequest request) {
-        return ResponseEntity.ok(userService.updateUser(id, request));
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
+      @RequestBody @Valid UserRequest request) {
+    return ResponseEntity.ok(userService.updateUser(id, request));
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    userService.deleteUser(id);
+    return ResponseEntity.noContent().build();
+  }
 }

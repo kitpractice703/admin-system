@@ -16,16 +16,16 @@ export interface NoticeRequest {
 }
 
 export const getNotices = () =>
-  axios.get<NoticeResponse[]>(`${BASE_URL}/notices`);
+  axios.get<NoticeResponse[]>(`${BASE_URL}/api/notices`);
 
 export const getNoticeById = (id: number) =>
-  axios.get<NoticeResponse>(`${BASE_URL}/notices/${id}`);
+  axios.get<NoticeResponse>(`${BASE_URL}/api/notices/${id}`);
 
 export const createNotice = (data: NoticeRequest) =>
-  axios.post<NoticeResponse>(`${BASE_URL}/notices`, data);
+  axios.post<NoticeResponse>(`${BASE_URL}/api/notices`, data);
 
 export const updateNotice = (id: number, data: NoticeRequest) =>
-  axios.put<NoticeResponse>(`${BASE_URL}/notices/${id}`, data);
+  axios.put<NoticeResponse>(`${BASE_URL}/api/notices/${id}`, data);
 
 export const deleteNotice = (id: number) =>
-  axios.delete(`${BASE_URL}/notices/${id}`);
+  axios.delete(`${BASE_URL}/api/notices/${id}`);
