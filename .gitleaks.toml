@@ -1,6 +1,0 @@
-[allowlist]
-  paths = [
-    '''admin-backend/auth-service/build/''',
-    '''admin-backend/user-service/build/''',
-    '''admin-backend/content-service/build/'''
-  ]
