@@ -82,22 +82,25 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
+    stage('Docker Build & Push') {
       steps {
-        sh 'docker build -t auth-service:latest -f admin-backend/auth-service/Dockerfile admin-backend'
-        sh 'docker build -t user-service:latest -f admin-backend/user-service/Dockerfile admin-backend'
-        sh 'docker build -t content-service:latest -f admin-backend/content-service/Dockerfile admin-backend'
-        sh 'docker build -t frontend:latest admin-frontend'
+        withCredentials([usernamePassword(credentialsId: 'ocir-credentials', usernameVariable: 'OCIR_USER', passwordVariable: 'OCIR_PASS')]) {
+          sh 'echo "$OCIR_PASS" | docker login yny.ocir.io -u "$OCIR_USER" --password-stdin'
+          sh 'docker buildx create --name oke-builder --driver docker-container --bootstrap --use || docker buildx use oke-builder'
+          sh 'docker buildx build --platform linux/arm64 -t yny.ocir.io/axspvtyyqq6h/auth-service:latest -f admin-backend/auth-service/Dockerfile --push admin-backend'
+          sh 'docker buildx build --platform linux/arm64 -t yny.ocir.io/axspvtyyqq6h/user-service:latest -f admin-backend/user-service/Dockerfile --push admin-backend'
+          sh 'docker buildx build --platform linux/arm64 -t yny.ocir.io/axspvtyyqq6h/content-service:latest -f admin-backend/content-service/Dockerfile --push admin-backend'
+        }
       }
-    }
+    }    
 
-    stage('Deploy') {
+    stage('Deploy to OKE') {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
           sh 'kubectl apply -f k8s/auth-service.yaml'
           sh 'kubectl apply -f k8s/user-service.yaml'
           sh 'kubectl apply -f k8s/content-service.yaml'
-          sh 'kubectl apply -f k8s/frontend.yaml'
+          sh 'kubectl rollout restart deployment/auth-service deployment/user-service deployment/content-service'
         }
       }
     }

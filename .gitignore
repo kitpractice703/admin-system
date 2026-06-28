@@ -13,3 +13,7 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# 기타
+*.kubeconfig
+ca.crt
