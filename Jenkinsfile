@@ -13,6 +13,12 @@ pipeline {
       }
     }
 
+    stage('GitLeaks') {
+      steps {
+        sh 'gitleaks detect --source $WORKSPACE --no-git'
+      }
+    }
+
     stage('auth-service Build') {
       steps {
         dir('admin-backend') {
@@ -72,6 +78,26 @@ pipeline {
       steps {
         dir('admin-backend') {
           sh './gradlew sonar -Dsonar.projectKey=admin-backend -Dsonar.host.url=http://sonarqube:9000 -Dsonar.token=$SONAR_TOKEN'
+        }
+      }
+    }
+
+    stage('Docker Build') {
+      steps {
+        sh 'docker build -t auth-service:latest -f admin-backend/auth-service/Dockerfile admin-backend'
+        sh 'docker build -t user-service:latest -f admin-backend/user-service/Dockerfile admin-backend'
+        sh 'docker build -t content-service:latest -f admin-backend/content-service/Dockerfile admin-backend'
+        sh 'docker build -t frontend:latest admin-frontend'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+          sh 'kubectl apply -f k8s/auth-service.yaml'
+          sh 'kubectl apply -f k8s/user-service.yaml'
+          sh 'kubectl apply -f k8s/content-service.yaml'
+          sh 'kubectl apply -f k8s/frontend.yaml'
         }
       }
     }
