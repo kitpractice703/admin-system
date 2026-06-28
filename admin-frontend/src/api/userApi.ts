@@ -16,16 +16,17 @@ export interface UserRequest {
   phoneNumber: string;
 }
 
-export const getUsers = () => axios.get<UserResponse[]>(`${BASE_URL}/users`);
+export const getUsers = () =>
+  axios.get<UserResponse[]>(`${BASE_URL}/api/users`);
 
 export const getUserById = (id: number) =>
-  axios.get<UserResponse>(`${BASE_URL}/users/${id}`);
+  axios.get<UserResponse>(`${BASE_URL}/api/users/${id}`);
 
 export const createUser = (data: UserRequest) =>
-  axios.post<UserResponse>(`${BASE_URL}/users`, data);
+  axios.post<UserResponse>(`${BASE_URL}/api/users`, data);
 
 export const updateUser = (id: number, data: UserRequest) =>
-  axios.put<UserResponse>(`${BASE_URL}/users/${id}`, data);
+  axios.put<UserResponse>(`${BASE_URL}/api/users/${id}`, data);
 
 export const deleteUser = (id: number) =>
-  axios.delete(`${BASE_URL}/users/${id}`);
+  axios.delete(`${BASE_URL}/api/users/${id}`);
